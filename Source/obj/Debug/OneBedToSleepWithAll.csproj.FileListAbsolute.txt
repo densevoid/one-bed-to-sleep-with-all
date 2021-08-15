@@ -1,0 +1,9 @@
+D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Source\obj\Debug\OneBedToSleepWithAll.csproj.AssemblyReference.cache
+D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Source\obj\Debug\OneBedToSleepWithAll.csproj.CoreCompileInputs.cache
+D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Assemblies\OneBedToSleepWithAll.dll
+D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Source\obj\Debug\OneBedToSleepWithAll.dll
+D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Source\obj\Debug\OneBedToSleepWithAll.csproj.CopyComplete
+D:\Common\Work\Rimworld\OneBedToSleepWithAll\Assemblies\OneBedToSleepWithAll.dll
+D:\Common\Work\Rimworld\OneBedToSleepWithAll\Source\obj\Debug\OneBedToSleepWithAll.csproj.AssemblyReference.cache
+D:\Common\Work\Rimworld\OneBedToSleepWithAll\Source\obj\Debug\OneBedToSleepWithAll.csproj.CoreCompileInputs.cache
+D:\Common\Work\Rimworld\OneBedToSleepWithAll\Source\obj\Debug\OneBedToSleepWithAll.dll

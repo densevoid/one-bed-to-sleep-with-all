@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <polygamyMode_modName>One Bed To Sleep With All</polygamyMode_modName>
+  
+  <polygamyMode_MakeAMaster>Make a master</polygamyMode_MakeAMaster>
+  <polygamyMode_Polygamy>Polygamy</polygamyMode_Polygamy>
+  <polygamyMode_enablePolygamy>Enable polygamy mode</polygamyMode_enablePolygamy>
+  <polygamyMode_Master>Master</polygamyMode_Master>
+  <polygamyMode_partnersCount>partners count</polygamyMode_partnersCount>
+  <polygamyMode_currentPartner>Current partner</polygamyMode_currentPartner>
+  <polygamyMode_status>Status</polygamyMode_status>
+  <polygamyMode_nothingIsHappening>Nothing is happening</polygamyMode_nothingIsHappening>
+  <polygamyMode_waitingForMaster>Waiting for master in bed</polygamyMode_waitingForMaster>
+  <polygamyMode_hoursOfSleepLeft>hours of master's sleep left</polygamyMode_hoursOfSleepLeft>
+  <polygamyMode_waitingForWakeUp>Waiting for everyone will wake up</polygamyMode_waitingForWakeUp>
+  <polygamyMode_permanentPartner>Permanent partner</polygamyMode_permanentPartner>
+  
+  <polygamyMode_requiredHours>Required master's sleep hours for a partner changing</polygamyMode_requiredHours>
+  
+</LanguageData>

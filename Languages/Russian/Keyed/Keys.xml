@@ -1,0 +1,17 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <polygamyMode_MakeAMaster>Сделать хозяином</polygamyMode_MakeAMaster>
+  <polygamyMode_Polygamy>Полигамная</polygamyMode_Polygamy>
+  <polygamyMode_enablePolygamy>Включить режим полигамии</polygamyMode_enablePolygamy>
+  <polygamyMode_Master>Хозяин</polygamyMode_Master>
+  <polygamyMode_partnersCount>количество партнёров</polygamyMode_partnersCount>
+  <polygamyMode_currentPartner>Текущий партнёр</polygamyMode_currentPartner>
+  <polygamyMode_status>Статус</polygamyMode_status>
+  <polygamyMode_nothingIsHappening>Ничего не происходит</polygamyMode_nothingIsHappening>
+  <polygamyMode_waitingForMaster>Ожидание хозяина в постели</polygamyMode_waitingForMaster>
+  <polygamyMode_hoursOfSleepLeft>часов сна хозяина осталось</polygamyMode_hoursOfSleepLeft>
+  <polygamyMode_waitingForWakeUp>Ожидание пока все проснуться</polygamyMode_waitingForWakeUp>
+  <polygamyMode_permanentPartner>Постоянный партнёр</polygamyMode_permanentPartner>
+  
+  <polygamyMode_requiredHours>Необходимые часы сна хозяина для смены партнера</polygamyMode_requiredHours>
+</LanguageData>
