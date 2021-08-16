@@ -46,23 +46,18 @@ namespace OneBedToSleepWithAll
 
         public static bool SimpleCheckIsHavePartnersPolygamyBed(Pawn pawn)
         {
-            Log.Message("checking 2" + pawn.Name.ToStringShort);
             if (pawn == null) return false;
 
             foreach (DirectPawnRelation relation in pawn.GetLoveRelations(false))
             {
-                Log.Message("1");
                 Building_Bed otherBed = relation.otherPawn.ownership.OwnedBed;
                 if (otherBed == null) continue;
-                Log.Message("2");
 
                 CompPolygamyMode polygamyComp = otherBed.GetComp<CompPolygamyMode>();
                 if (polygamyComp == null || !polygamyComp.isPolygamy) continue;
-                Log.Message("3");
 
                 return true;
             }
-            Log.Message("4");
 
             return false;
         }
@@ -71,7 +66,6 @@ namespace OneBedToSleepWithAll
         public static bool CheckIsAPolygamyMaster(Pawn pawn)
         {
             if (pawn == null) return false;
-            Log.Message("checking 1" + pawn.Name.ToStringShort);
 
             Building_Bed bed = pawn.ownership.OwnedBed;
             if (bed == null) return false;
