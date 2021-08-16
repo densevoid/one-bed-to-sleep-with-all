@@ -20,10 +20,41 @@ namespace OneBedToSleepWithAll.Patch
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
             var code = new List<CodeInstruction>(instructions);
+
             int insertionIndex = -1;
+            Label miniJump2 = il.DefineLabel();
+
+            for (int i = 0; i < code.Count - 1; i++)
+            {
+                if (code[i].opcode == OpCodes.Ldc_I4_0 && code[i + 1].opcode == OpCodes.Stloc_3)
+                {
+                    insertionIndex = i;
+                    code[i].labels.Add(miniJump2);
+                    break;
+                }
+            }
+
+
+            var instructionsToInsert = new List<CodeInstruction>();
+
+            if (insertionIndex != -1)
+            {
+                //if itself master
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_1));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PolygamyModeUtility), "CheckIsAPolygamyMaster")));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Brfalse, miniJump2));
+
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_I4_0));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ThoughtState), "op_Implicit")));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ret));
+
+                code.InsertRange(insertionIndex, instructionsToInsert);
+            }
+
+
+            insertionIndex = -1;
 
             Label myIfLabel = il.DefineLabel();
-            Label nextIfLabel = il.DefineLabel();
             Label miniJump = il.DefineLabel();
 
             for (int i = 4; i < code.Count - 4; i++)
@@ -32,12 +63,13 @@ namespace OneBedToSleepWithAll.Patch
                 {
                     insertionIndex = i;
                     code[i - 4].operand = myIfLabel;
-                    code[i].labels.Add(nextIfLabel);
+                    code[i - 14].operand = myIfLabel;
+                    code[i].labels.Add(miniJump);
                     break;
                 }
             }
 
-            var instructionsToInsert = new List<CodeInstruction>();
+            instructionsToInsert = new List<CodeInstruction>();
 
             if (insertionIndex != -1)
             {
@@ -47,18 +79,9 @@ namespace OneBedToSleepWithAll.Patch
                 instructionsToInsert.Add(myIfInstruction);
 
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PolygamyModeUtility), "SimpleCheckIsHavePartnersPolygamyBed")));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Brtrue, miniJump));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Brfalse, miniJump));
 
-                // or itself master
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_1));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PolygamyModeUtility), "CheckIsAPolygamyMaster")));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Brfalse, nextIfLabel));
-
-                // then return
-                CodeInstruction resultInstruction = new CodeInstruction(OpCodes.Ldc_I4_0);
-                resultInstruction.labels.Add(miniJump);
-                instructionsToInsert.Add(resultInstruction);
-
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_I4_0));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(ThoughtState), "op_Implicit")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ret));
 

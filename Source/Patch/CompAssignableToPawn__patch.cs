@@ -11,7 +11,7 @@ using Verse;
 namespace OneBedToSleepWithAll.Patch
 {
     [HarmonyPatch]
-    public class CompAssignableToPawn__patching
+    public class CompAssignableToPawn__assign_patching
     {
         static IEnumerable<MethodBase> TargetMethods()
         {

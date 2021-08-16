@@ -16,6 +16,17 @@ namespace OneBedToSleepWithAll
         public static Building_Bed CheckIsHavePartnersPolygamyBed(Pawn sleeper, bool checkSocialProperness, bool ignoreOtherReservations = false, GuestStatus? guestStatus = null)
         {
             if (sleeper == null) return null;
+
+            Building_Bed sleeper_bed = sleeper.ownership.OwnedBed;
+            if (sleeper_bed != null)
+            {
+                CompPolygamyMode polygamyComp = sleeper_bed.GetComp<CompPolygamyMode>();
+                if (polygamyComp != null && polygamyComp.isPolygamy && polygamyComp.Master == sleeper)
+                {
+                    return null;
+                }
+            }
+
             foreach (DirectPawnRelation relation in sleeper.GetLoveRelations(false))
             {
                 Building_Bed otherBed = relation.otherPawn.ownership.OwnedBed;
@@ -35,18 +46,23 @@ namespace OneBedToSleepWithAll
 
         public static bool SimpleCheckIsHavePartnersPolygamyBed(Pawn pawn)
         {
+            Log.Message("checking 2" + pawn.Name.ToStringShort);
             if (pawn == null) return false;
 
             foreach (DirectPawnRelation relation in pawn.GetLoveRelations(false))
             {
+                Log.Message("1");
                 Building_Bed otherBed = relation.otherPawn.ownership.OwnedBed;
                 if (otherBed == null) continue;
+                Log.Message("2");
 
                 CompPolygamyMode polygamyComp = otherBed.GetComp<CompPolygamyMode>();
                 if (polygamyComp == null || !polygamyComp.isPolygamy) continue;
+                Log.Message("3");
 
                 return true;
             }
+            Log.Message("4");
 
             return false;
         }
@@ -55,6 +71,7 @@ namespace OneBedToSleepWithAll
         public static bool CheckIsAPolygamyMaster(Pawn pawn)
         {
             if (pawn == null) return false;
+            Log.Message("checking 1" + pawn.Name.ToStringShort);
 
             Building_Bed bed = pawn.ownership.OwnedBed;
             if (bed == null) return false;

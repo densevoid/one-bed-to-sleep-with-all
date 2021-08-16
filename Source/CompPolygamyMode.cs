@@ -38,10 +38,14 @@ namespace OneBedToSleepWithAll
                     if (bed != null)
                     {
                         if (currentNeighbor != null)
+                        {
                             bed.CompAssignableToPawn.ForceRemovePawn(currentNeighbor);
+                        }
 
                         if (value != null)
+                        {
                             bed.CompAssignableToPawn.ForceAddPawn(value);
+                        }
                     }
 
                     currentNeighbor = value;
@@ -77,7 +81,12 @@ namespace OneBedToSleepWithAll
 
             loveRelations.RemoveAll(relation =>
             {
-                bool result = !BedUtility.WillingToShareBed(master, relation.otherPawn) || relation.otherPawn.Map != bed.Map;
+                Building_Bed otherBed = relation.otherPawn.ownership.OwnedBed;
+                CompPolygamyMode otherPC = null;
+
+                if (otherBed != null) otherPC = otherBed.GetComp<CompPolygamyMode>();
+
+                bool result = !BedUtility.WillingToShareBed(master, relation.otherPawn) || relation.otherPawn.Map != bed.Map || (otherPC != null && otherPC.isPolygamy && otherPC.Master == relation.otherPawn);
                 return result;
             });
 
@@ -122,6 +131,15 @@ namespace OneBedToSleepWithAll
             Scribe_References.Look<Pawn>(ref this.master, "polygamyOwner");
             Scribe_References.Look<Pawn>(ref this.currentNeighbor, "currentNeighbor");
             Scribe_Values.Look<bool>(ref this.isOwnerInBed, "isOwnerInBed", false, false);
+
+            if (Scribe.mode == LoadSaveMode.PostLoadInit)
+            {
+                if (isPolygamy && currentNeighbor != null)
+                {
+                    Building_Bed bed = parent as Building_Bed;
+                    bed.CompAssignableToPawn.ForceAddPawn(currentNeighbor);
+                }
+            }
         }
 
         public void DefineMaster()
