@@ -13,19 +13,9 @@ namespace OneBedToSleepWithAll
 {
     public class PolygamyModeUtility
     {
-        public static Building_Bed CheckIsHavePartnersPolygamyBed(Pawn sleeper, bool checkSocialProperness, bool ignoreOtherReservations = false, GuestStatus? guestStatus = null)
+        public static Building_Bed CheckIsHavePartnersPolygamyBed(Pawn sleeper, Pawn traveler, bool checkSocialProperness, bool ignoreOtherReservations = false, GuestStatus? guestStatus = null)
         {
             if (sleeper == null) return null;
-
-            Building_Bed sleeper_bed = sleeper.ownership.OwnedBed;
-            if (sleeper_bed != null)
-            {
-                CompPolygamyMode polygamyComp = sleeper_bed.GetComp<CompPolygamyMode>();
-                if (polygamyComp != null && polygamyComp.isPolygamy && polygamyComp.Master == sleeper)
-                {
-                    return null;
-                }
-            }
 
             foreach (DirectPawnRelation relation in sleeper.GetLoveRelations(false))
             {
@@ -35,7 +25,7 @@ namespace OneBedToSleepWithAll
                 CompPolygamyMode polygamyComp = otherBed.GetComp<CompPolygamyMode>();
                 if (polygamyComp == null) continue;
 
-                if (polygamyComp.CurrentNeighbor != null && polygamyComp.CurrentNeighbor == sleeper && RestUtility.IsValidBedFor(otherBed, sleeper, sleeper, checkSocialProperness, false, ignoreOtherReservations, guestStatus))
+                if (polygamyComp.CurrentNeighbor != null && polygamyComp.CurrentNeighbor == sleeper && RestUtility.IsValidBedFor(otherBed, sleeper, traveler, checkSocialProperness, false, ignoreOtherReservations, guestStatus))
                 {
                     return otherBed;
                 }

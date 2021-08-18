@@ -3,60 +3,96 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Reflection.Emit;
 using System.Text;
 using System.Threading.Tasks;
 using Verse;
 using Verse.AI;
+using Verse.AI.Group;
 
 namespace OneBedToSleepWithAll.Patch
 {
-    [HarmonyPatch(typeof(RestUtility))]
-    [HarmonyPatch("FindBedFor")]
-    [HarmonyPatch(new Type[] { typeof(Pawn), typeof(Pawn), typeof(bool), typeof(bool), typeof(GuestStatus) })]
 
-    class RestUtility__FindBedFor
+    /*
+    [HarmonyPatch(typeof(MainMenuDrawer))]
+    [HarmonyPatch("Init")]
+
+    class MainMenuDrawer__Init
     {
-        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        static void Postfix()
         {
-            var code = new List<CodeInstruction>(instructions);
-            int insertionIndex = -1;
+            Log.Message("INIT!");
 
-            Label returnLabel = il.DefineLabel();
-
-            for (int i = 0; i < code.Count - 3; i++)
+            MethodInfo info = AccessTools.Method(typeof(RestUtility), "FindBedFor", new Type[] { typeof(Pawn) });
+            if (info != null)
             {
-                if (code[i].opcode == OpCodes.Ldloc_0 && code[i + 1].opcode == OpCodes.Ldfld && code[i + 3].opcode == OpCodes.Brfalse_S)
+                Log.Message("Method: " + info.ToString());
+                Patches patches = Harmony.GetPatchInfo(info);
+                Log.Message("- Prefixes: ");
+                foreach (HarmonyLib.Patch prefix in patches.Prefixes)
                 {
-                    insertionIndex = i;
-                    code[i].labels.Add(returnLabel);
-                    break;
+                    Log.Message("--- " + prefix.owner + " " + prefix.priority);
+                }
+                Log.Message("- Transpilers: ");
+                foreach (HarmonyLib.Patch transpilers in patches.Transpilers)
+                {
+                    Log.Message("--- " + transpilers.owner + " " + transpilers.priority);
+                }
+                Log.Message("- Postfixes: ");
+                foreach (HarmonyLib.Patch postfix in patches.Postfixes)
+                {
+                    Log.Message("--- " + postfix.owner + " " + postfix.priority);
                 }
             }
 
-            var instructionsToInsert = new List<CodeInstruction>();
-
-            if (insertionIndex != -1)
+            MethodInfo info2 = AccessTools.Method(typeof(RestUtility), "FindBedFor", new Type[] { typeof(Pawn), typeof(Pawn), typeof(bool), typeof(bool), typeof(GuestStatus) });
+            if (info2 != null)
             {
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_0));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_2));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg, 3));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg, 4));
-
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PolygamyModeUtility), "CheckIsHavePartnersPolygamyBed")));
-
-                LocalBuilder partnersPolygamyBed = il.DeclareLocal(typeof(Building_Bed));
-                partnersPolygamyBed.SetLocalSymInfo("partnersPolygamyBed");
-
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Stloc, partnersPolygamyBed.LocalIndex));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc, partnersPolygamyBed.LocalIndex));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Brfalse, returnLabel));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc, partnersPolygamyBed.LocalIndex));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ret));
-
-                code.InsertRange(insertionIndex, instructionsToInsert);
+                Log.Message("Method: " + info2.ToString());
+                Patches patches = Harmony.GetPatchInfo(info2);
+                Log.Message("- Prefixes: ");
+                foreach (HarmonyLib.Patch prefix in patches.Prefixes)
+                {
+                    Log.Message("--- " + prefix.owner + " " + prefix.priority);
+                }
+                Log.Message("- Transpilers: ");
+                foreach (HarmonyLib.Patch transpilers in patches.Transpilers)
+                {
+                    Log.Message("--- " + transpilers.owner + " " + transpilers.priority);
+                }
+                Log.Message("- Postfixes: ");
+                foreach (HarmonyLib.Patch postfix in patches.Postfixes)
+                {
+                    Log.Message("--- " + postfix.owner + " " + postfix.priority);
+                }
             }
-            return code;
+        }
+    }
+    */
+    
+    [HarmonyPatch(typeof(RestUtility))]
+    [HarmonyPatch("FindBedFor")]
+    [HarmonyPatch(new Type[] { typeof(Pawn), typeof(Pawn), typeof(bool), typeof(bool), typeof(GuestStatus) })]
+    [HarmonyAfter(new string[] { "KeepBedOwnership" })]
+
+    class RestUtility__FindBedFor
+    {
+        static void Postfix(ref Building_Bed __result, Pawn sleeper, Pawn traveler, bool checkSocialProperness, bool ignoreOtherReservations, GuestStatus? guestStatus)
+        {
+            Building_Bed sleeper_bed = sleeper.ownership.OwnedBed;
+            if (sleeper_bed != null)
+            {
+                CompPolygamyMode polygamyComp = sleeper_bed.GetComp<CompPolygamyMode>();
+                if (polygamyComp != null && polygamyComp.isPolygamy && polygamyComp.Master == sleeper)
+                {
+                    return;
+                }
+            }
+
+            Building_Bed partnersPolygamyBed = PolygamyModeUtility.CheckIsHavePartnersPolygamyBed(sleeper, traveler, checkSocialProperness, ignoreOtherReservations, guestStatus);
+            if (partnersPolygamyBed != null)
+                __result = partnersPolygamyBed;
         }
     }
 }
