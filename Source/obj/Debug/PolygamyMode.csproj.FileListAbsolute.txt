@@ -1,8 +1,0 @@
-D:\Common\Work\Rimworld\PolygamyMode\Assemblies\PolygamyMode.dll
-D:\Common\Work\Rimworld\PolygamyMode\Source\obj\Debug\PolygamyMode.csproj.AssemblyReference.cache
-D:\Common\Work\Rimworld\PolygamyMode\Source\obj\Debug\PolygamyMode.csproj.CoreCompileInputs.cache
-D:\Common\Work\Rimworld\PolygamyMode\Source\obj\Debug\PolygamyMode.dll
-D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Assemblies\PolygamyMode.dll
-D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Source\obj\Debug\PolygamyMode.csproj.AssemblyReference.cache
-D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Source\obj\Debug\PolygamyMode.csproj.CoreCompileInputs.cache
-D:\Windows\Games\SteamLibrary\steamapps\common\RimWorld\Mods\PolygamyMode\Source\obj\Debug\PolygamyMode.dll
