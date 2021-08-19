@@ -13,64 +13,6 @@ using Verse.AI.Group;
 
 namespace OneBedToSleepWithAll.Patch
 {
-
-    /*
-    [HarmonyPatch(typeof(MainMenuDrawer))]
-    [HarmonyPatch("Init")]
-
-    class MainMenuDrawer__Init
-    {
-        static void Postfix()
-        {
-            Log.Message("INIT!");
-
-            MethodInfo info = AccessTools.Method(typeof(RestUtility), "FindBedFor", new Type[] { typeof(Pawn) });
-            if (info != null)
-            {
-                Log.Message("Method: " + info.ToString());
-                Patches patches = Harmony.GetPatchInfo(info);
-                Log.Message("- Prefixes: ");
-                foreach (HarmonyLib.Patch prefix in patches.Prefixes)
-                {
-                    Log.Message("--- " + prefix.owner + " " + prefix.priority);
-                }
-                Log.Message("- Transpilers: ");
-                foreach (HarmonyLib.Patch transpilers in patches.Transpilers)
-                {
-                    Log.Message("--- " + transpilers.owner + " " + transpilers.priority);
-                }
-                Log.Message("- Postfixes: ");
-                foreach (HarmonyLib.Patch postfix in patches.Postfixes)
-                {
-                    Log.Message("--- " + postfix.owner + " " + postfix.priority);
-                }
-            }
-
-            MethodInfo info2 = AccessTools.Method(typeof(RestUtility), "FindBedFor", new Type[] { typeof(Pawn), typeof(Pawn), typeof(bool), typeof(bool), typeof(GuestStatus) });
-            if (info2 != null)
-            {
-                Log.Message("Method: " + info2.ToString());
-                Patches patches = Harmony.GetPatchInfo(info2);
-                Log.Message("- Prefixes: ");
-                foreach (HarmonyLib.Patch prefix in patches.Prefixes)
-                {
-                    Log.Message("--- " + prefix.owner + " " + prefix.priority);
-                }
-                Log.Message("- Transpilers: ");
-                foreach (HarmonyLib.Patch transpilers in patches.Transpilers)
-                {
-                    Log.Message("--- " + transpilers.owner + " " + transpilers.priority);
-                }
-                Log.Message("- Postfixes: ");
-                foreach (HarmonyLib.Patch postfix in patches.Postfixes)
-                {
-                    Log.Message("--- " + postfix.owner + " " + postfix.priority);
-                }
-            }
-        }
-    }
-    */
-    
     [HarmonyPatch(typeof(RestUtility))]
     [HarmonyPatch("FindBedFor")]
     [HarmonyPatch(new Type[] { typeof(Pawn), typeof(Pawn), typeof(bool), typeof(bool), typeof(GuestStatus) })]
