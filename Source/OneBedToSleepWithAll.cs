@@ -71,6 +71,7 @@ namespace OneBedToSleepWithAll
             patchedMethods.Add(AccessTools.Method(typeof(RestUtility), "FindBedFor", new Type[] { typeof(Pawn) }));
             patchedMethods.Add(AccessTools.Method(typeof(RestUtility), "FindBedFor", new Type[] { typeof(Pawn), typeof(Pawn), typeof(bool), typeof(bool), typeof(GuestStatus) }));
             patchedMethods.Add(AccessTools.Method(typeof(ThoughtWorker_WantToSleepWithSpouseOrLover), "CurrentStateInternal"));
+            patchedMethods.Add(AccessTools.Method(typeof(Pawn_Ownership), "ClaimBedIfNonMedical"));
 
             int allConflictsCount = 0;
             String conflictsRes = "";

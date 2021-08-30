@@ -137,7 +137,14 @@ namespace OneBedToSleepWithAll
                 if (isPolygamy && currentNeighbor != null)
                 {
                     Building_Bed bed = parent as Building_Bed;
-                    bed.CompAssignableToPawn.ForceAddPawn(currentNeighbor);
+                    //Log.Message("Current: " + currentNeighbor.Name.ToStringFull);
+                    //Log.Message("Assigned: ");
+                    //foreach (Pawn owner in bed.CompAssignableToPawn.AssignedPawns)
+                    //{
+                    //    Log.Message(owner.Name.ToStringFull);
+                    //}
+                    if (!bed.CompAssignableToPawn.AssignedPawns.Contains(currentNeighbor))
+                        bed.CompAssignableToPawn.ForceAddPawn(currentNeighbor);
                 }
             }
         }

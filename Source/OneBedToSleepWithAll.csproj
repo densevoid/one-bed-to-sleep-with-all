@@ -68,6 +68,7 @@
     <Compile Include="Patch\CompAssignableToPawn__patch.cs" />
     <Compile Include="Patch\DefGenerator__patch.cs" />
     <Compile Include="Patch\Dialog_AssignBuildingOwner__patch.cs" />
+    <Compile Include="Patch\Pawn_Ownership__patch.cs" />
     <Compile Include="Patch\Pawn__patch.cs" />
     <Compile Include="Patch\RestUtility__patch.cs" />
     <Compile Include="Patch\ThoughtWorker_WantToSleepWithSpouseOrLover__patch.cs" />
