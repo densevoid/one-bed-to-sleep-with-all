@@ -13,7 +13,7 @@ namespace OneBedToSleepWithAll.Patch
         {
             foreach (ThingDef item in DefDatabase<ThingDef>.AllDefs)
             {
-                if (item.thingClass == typeof(Building_Bed))
+                if (item.thingClass == typeof(Building_Bed) || typeof(Building_Bed).AllSubclassesNonAbstract().Contains(item.thingClass))
                 {
                     int slotCount = BedUtility.GetSleepingSlotsCount(item.size);
 

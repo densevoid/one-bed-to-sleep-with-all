@@ -25,7 +25,7 @@ namespace OneBedToSleepWithAll
                 CompPolygamyMode polygamyComp = otherBed.GetComp<CompPolygamyMode>();
                 if (polygamyComp == null) continue;
 
-                if (polygamyComp.CurrentNeighbor != null && polygamyComp.CurrentNeighbor == sleeper && RestUtility.IsValidBedFor(otherBed, sleeper, traveler, checkSocialProperness, false, ignoreOtherReservations, guestStatus))
+                if (polygamyComp.CurrentNeighbor != null && polygamyComp.CurrentNeighbor == sleeper && RestUtility.IsValidBedFor(otherBed, sleeper, traveler, checkSocialProperness, false, ignoreOtherReservations, relation.otherPawn.GuestStatus))
                 {
                     return otherBed;
                 }
