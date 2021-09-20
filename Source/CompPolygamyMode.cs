@@ -262,9 +262,18 @@ namespace OneBedToSleepWithAll
             return list[nextIndex].otherPawn;
         }
 
+        public override void CompTick()
+        {
+            base.CompTick();
+            if (this.parent.IsHashIntervalTick(250))
+            {
+                UpdateCondition();
+            }
+        }
 
         public override void CompTickRare()
         {
+            base.CompTickRare();
             UpdateCondition();
         }
 
