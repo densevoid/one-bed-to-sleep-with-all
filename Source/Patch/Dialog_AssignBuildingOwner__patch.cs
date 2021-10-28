@@ -89,7 +89,7 @@ namespace OneBedToSleepWithAll.Patch
 
             for (int i = 0; i < code.Count - 25; i++)
             {
-                if (code[i + 5].opcode == OpCodes.Callvirt && code[i + 5].operand is MethodInfo method && method == AccessTools.Method(typeof(CompAssignableToPawn), "IdeoligionForbids"))
+                if (code[i + 4].opcode == OpCodes.Callvirt && code[i + 4].operand is MethodInfo method && method == AccessTools.Method(typeof(CompAssignableToPawn), "IdeoligionForbids"))
                 {
                     insertionIndex = i;
                     code[i].labels.Add(nextIf);
@@ -126,6 +126,7 @@ namespace OneBedToSleepWithAll.Patch
                 // AddMakeMasterButton(rect, pawn, this.assignable.parent);
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_S, 14));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_S, 7));
+                //instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(RimWorld.Dialog_AssignBuildingOwner/ '<>c__DisplayClass8_0'), "p")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_0));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Dialog_AssignBuildingOwner), "assignable")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ThingComp), "parent")));

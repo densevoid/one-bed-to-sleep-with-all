@@ -3,6 +3,7 @@ using RimWorld;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 using UnityEngine;
@@ -117,8 +118,18 @@ namespace OneBedToSleepWithAll
             return false;
         }
 
-        public static bool AddMakeMasterButton(Rect rect, Pawn pawn, ThingWithComps parent)
+        public static bool AddMakeMasterButton(Rect rect, System.Object pawn_raw, ThingWithComps parent)
         {
+            Pawn pawn;
+            if (pawn_raw is Pawn)
+            {
+                pawn = (Pawn)pawn_raw;
+            }
+            else
+            {
+                pawn = (Pawn)pawn_raw.GetType().GetField("p").GetValue(pawn_raw);
+            }
+
             Building_Bed bed = parent as Building_Bed;
             
             if (bed == null)
