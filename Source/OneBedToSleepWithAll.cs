@@ -16,7 +16,7 @@ namespace OneBedToSleepWithAll
         public OneBedToSleepWithAll(ModContentPack content) : base(content)
         {
             Settings = GetSettings<OneBedToSleepWithAll__settings>();
-            new Harmony("densevoid.onebedtosleepwithall").PatchAll(Assembly.GetExecutingAssembly());
+            new Harmony("densevoid.hui.personalworkcat").PatchAll(Assembly.GetExecutingAssembly());
         }
         public override string SettingsCategory()
         {
