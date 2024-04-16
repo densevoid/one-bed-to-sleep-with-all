@@ -232,18 +232,7 @@ namespace OneBedToSleepWithAll
 
                             if (timeForNextNeighbor <= 0 && bed.CurOccupants.Count() <= 0)
                             {
-                                //next queue
-                                int curIndex = -1;
-
-                                foreach (DirectPawnRelation relation in LoveRelations)
-                                {
-                                    if (relation.otherPawn == CurrentNeighbor)
-                                    {
-                                        curIndex = LoveRelations.IndexOf(relation);
-                                    }
-                                }
-                                CurrentNeighbor = GetNextNeighbor(LoveRelations, curIndex);
-                                timeForNextNeighbor = QueueTime;
+                                NextNeighbor();
                             }
                         }
                     }
@@ -256,11 +245,57 @@ namespace OneBedToSleepWithAll
         }
 
 
+        public Pawn NextNeighbor()
+        {
+            int curIndex = -1;
+
+            foreach (DirectPawnRelation relation in LoveRelations)
+            {
+                if (relation.otherPawn == CurrentNeighbor)
+                {
+                    curIndex = LoveRelations.IndexOf(relation);
+                }
+            }
+
+            CurrentNeighbor = GetNextNeighbor(LoveRelations, curIndex);
+            timeForNextNeighbor = QueueTime;
+
+            return CurrentNeighbor;
+        }
+
+
+        public Pawn PreviousNeighbor()
+        {
+            int curIndex = -1;
+
+            foreach (DirectPawnRelation relation in LoveRelations)
+            {
+                if (relation.otherPawn == CurrentNeighbor)
+                {
+                    curIndex = LoveRelations.IndexOf(relation);
+                }
+            }
+
+            CurrentNeighbor = GetPreviousNeighbor(LoveRelations, curIndex);
+            timeForNextNeighbor = QueueTime;
+
+            return CurrentNeighbor;
+        }
+
+
         public static Pawn GetNextNeighbor(List<DirectPawnRelation> list, int prevNeighborIndex)
         {
             int nextIndex = (prevNeighborIndex + 1) % list.Count;
             return list[nextIndex].otherPawn;
         }
+
+        public static Pawn GetPreviousNeighbor(List<DirectPawnRelation> list, int prevNeighborIndex)
+        {
+            int previousIndex = (prevNeighborIndex - 1) % list.Count;
+            if (previousIndex < 0) previousIndex = list.Count - 1;
+            return list[previousIndex].otherPawn;
+        }
+
 
         public override void CompTick()
         {
@@ -317,6 +352,29 @@ namespace OneBedToSleepWithAll
                         else PolygamyModeDisabled();
                     },
                 };
+
+                if (isPolygamy && LoveRelations.Count > 1)
+                {
+                    yield return new Command_Action
+                    {
+                        defaultLabel = "polygamyMode_previousPartner".Translate(),
+                        icon = ContentFinder<Texture2D>.Get("UI/Commands/SelectPreviousTransporter", false),
+                        action = delegate ()
+                        {
+                            PreviousNeighbor();
+                        },
+                    };
+
+                    yield return new Command_Action
+                    {
+                        defaultLabel = "polygamyMode_nextPartner".Translate(),
+                        icon = ContentFinder<Texture2D>.Get("UI/Commands/SelectNextTransporter", false),
+                        action = delegate ()
+                        {
+                            NextNeighbor();
+                        },
+                    };
+                }
             }
         }
 

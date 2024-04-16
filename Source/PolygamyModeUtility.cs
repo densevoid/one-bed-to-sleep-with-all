@@ -118,7 +118,7 @@ namespace OneBedToSleepWithAll
             return false;
         }
 
-        public static bool AddMakeMasterButton(RectDivider rectDivider, System.Object pawn_raw, ThingWithComps parent, bool isRectFull)
+        public static bool AddMakeMasterButton(Rect rect, System.Object pawn_raw, ThingWithComps parent, bool isRectFull)
         {
             Pawn pawn;
             if (pawn_raw is Pawn)
@@ -149,12 +149,7 @@ namespace OneBedToSleepWithAll
             AcceptanceReport acceptanceReport = bed.CompAssignableToPawn.CanAssignTo(pawn);
             bool accepted = acceptanceReport.Accepted;
 
-            if (!isRectFull)
-            {
-                rectDivider = rectDivider.NewCol(165f, HorizontalJustification.Right);
-            }
-
-            if (Widgets.ButtonText(rectDivider, "polygamyMode_MakeAMaster".Translate(), true, true, accepted, null))
+            if (Widgets.ButtonText(rect, "polygamyMode_MakeAMaster".Translate(), true, true, accepted, null))
             {
                 if (polygamyComp.Master != null)
                     bed.GetComp<CompAssignableToPawn>().TryUnassignPawn(polygamyComp.Master);

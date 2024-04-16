@@ -12,8 +12,8 @@ using UnityEngine;
 
 namespace OneBedToSleepWithAll.Patch
 {
-    [HarmonyPatch(typeof(Dialog_AssignBuildingOwner), "DoWindowContents")]
-    class Dialog_AssignBuildingOwner__DoWindowContents
+    [HarmonyPatch(typeof(Dialog_AssignBuildingOwner), "DrawAssignedRow")]
+    class Dialog_AssignBuildingOwner__DrawAssignedRow
     {
         static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
         {
@@ -34,18 +34,22 @@ namespace OneBedToSleepWithAll.Patch
                     Log.Message(i + " : " + code[i].opcode.Name + "   " + code[i].operand.GetType() + "   " + (AccessTools.Method(typeof(Widgets), "ThingIcon") == ((System.Reflection.MethodInfo)code[i].operand)));
                 }
             }
-            */            
+            */
 
             for (int i = 0; i < code.Count; i++)
             {
                 if (code[i].opcode == OpCodes.Ldstr && code[i].operand.Equals("BuildingUnassign"))
                 {
-                    insertionIndex = i - 5;
+                    insertionIndex = i - 1;
 
+                    
                     code[insertionIndex].labels.Add(nextIfLabel);
 
                     int j = insertionIndex + 1;
-                    while (j < code.Count) {
+
+
+                    while (j < code.Count)
+                    {
                         j++;
 
                         if (code[j].opcode == OpCodes.Brfalse_S)
@@ -56,9 +60,11 @@ namespace OneBedToSleepWithAll.Patch
                         }
                     }
 
+                    /*
                     while (j < code.Count)
                     {
                         j++;
+                        Log.Message("b: " + j);
 
                         if (code[j].opcode == OpCodes.Leave)
                         {
@@ -67,6 +73,7 @@ namespace OneBedToSleepWithAll.Patch
                             break;
                         }
                     }
+                    */
 
                     break;
                 }
@@ -76,11 +83,11 @@ namespace OneBedToSleepWithAll.Patch
 
             if (insertionIndex != -1)
             {
-                int pawnID = 19;
-                int rectID = 20;
+                int pawnID = 1;
+                int rectID = 2;
 
                 // CheckIsCurrentPolygamyPartner(pawn, this.assignable.parent);
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_S, pawnID));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_1));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_0));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Dialog_AssignBuildingOwner), "assignable")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ThingComp), "parent")));
@@ -89,29 +96,48 @@ namespace OneBedToSleepWithAll.Patch
                 // if false go to next if
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Brfalse_S, nextIfLabel));
 
+                
                 // AddMakeMasterButton(rect, pawn, this.assignable.parent);
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_S, rectID));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_S, pawnID));
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_1));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldarg_0));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(Dialog_AssignBuildingOwner), "assignable")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldfld, AccessTools.Field(typeof(ThingComp), "parent")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldc_I4_0));
-                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PolygamyModeUtility), "AddMakeMasterButton")));                
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PolygamyModeUtility), "AddMakeMasterButton")));
 
+                instructionsToInsert.Add(new CodeInstruction(OpCodes.Pop));
+                
+
+
+
+
+                /*
                 // if true then return
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Brfalse_S, miniJump));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Leave, returnLable));
+                */
 
                 // go to end of if-else
                 CodeInstruction finalInstruction = new CodeInstruction(OpCodes.Br_S, exitIfLabel);
-                finalInstruction.labels.Add(miniJump);
+                //finalInstruction.labels.Add(miniJump);
                 instructionsToInsert.Add(finalInstruction);
-                
+
                 code.InsertRange(insertionIndex, instructionsToInsert);
             }
 
-            
-            insertionIndex = -1;
+            return code;
+        }
+    }
+
+    
+    [HarmonyPatch(typeof(Dialog_AssignBuildingOwner), "DrawUnassignedRow")]
+    class Dialog_AssignBuildingOwner__DrawUnassignedRow
+    {
+        static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> instructions, ILGenerator il)
+        {
+            var code = new List<CodeInstruction>(instructions);
+            int insertionIndex = -1;
 
             Label miniJump3 = il.DefineLabel();
             Label nextIf = il.DefineLabel();
@@ -129,7 +155,7 @@ namespace OneBedToSleepWithAll.Patch
                     {
                         j++;
 
-                        if (code[j].opcode == OpCodes.Br)
+                        if (code[j].opcode == OpCodes.Br_S)
                         {
                             //Log.Message("Found EXITIF on line number: " + j);
                             exitIf = (Label)code[j].operand;
@@ -140,9 +166,8 @@ namespace OneBedToSleepWithAll.Patch
                 }
             }
 
-
-            instructionsToInsert = new List<CodeInstruction>();
-
+            var instructionsToInsert = new List<CodeInstruction>();
+            
             if (insertionIndex != -1)
             {
 
@@ -153,8 +178,8 @@ namespace OneBedToSleepWithAll.Patch
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(PolygamyModeUtility), "CheckIsPolygamyBed")));
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Brfalse_S, nextIf));
 
-                int pawnID = 25;
-                int rectID = 29;
+                int pawnID = 0;
+                int rectID = 5;
 
                 // AddMakeMasterButton(rect, pawn, this.assignable.parent);
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Ldloc_S, rectID));
@@ -167,9 +192,11 @@ namespace OneBedToSleepWithAll.Patch
                 instructionsToInsert.Add(new CodeInstruction(OpCodes.Br_S, exitIf));
 
                 code.InsertRange(insertionIndex, instructionsToInsert);
-            } 
+            }
+            
 
             return code;
         }
     }
+    
 }
