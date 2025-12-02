@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<LanguageData>
+  <polygamyMode_modName>一床睡全村</polygamyMode_modName>
+  
+  <polygamyMode_MakeAMaster>设为床主</polygamyMode_MakeAMaster>
+  <polygamyMode_Polygamy>多人同床</polygamyMode_Polygamy>
+  <polygamyMode_enablePolygamy>启用多人同床模式</polygamyMode_enablePolygamy>
+  <polygamyMode_Master>床主</polygamyMode_Master>
+  <polygamyMode_partnersCount>伴侣数量</polygamyMode_partnersCount>
+  <polygamyMode_currentPartner>当前伴侣</polygamyMode_currentPartner>
+  <polygamyMode_status>状态</polygamyMode_status>
+  <polygamyMode_nothingIsHappening>暂时没动静</polygamyMode_nothingIsHappening>
+  <polygamyMode_waitingForMaster>在床上等床主</polygamyMode_waitingForMaster>
+  <polygamyMode_hoursOfSleepLeft>床主剩余睡觉时间（小时）</polygamyMode_hoursOfSleepLeft>
+  <polygamyMode_waitingForWakeUp>等大家都醒</polygamyMode_waitingForWakeUp>
+  <polygamyMode_permanentPartner>固定伴侣</polygamyMode_permanentPartner>
+  
+  <polygamyMode_requiredHours>更换伴侣所需的床主睡眠时长</polygamyMode_requiredHours>
+  
+</LanguageData>
